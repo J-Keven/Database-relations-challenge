@@ -49,6 +49,6 @@ export default class CreateTableOrder1605223553106
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('order');
+    await queryRunner.dropTable('orders');
   }
 }

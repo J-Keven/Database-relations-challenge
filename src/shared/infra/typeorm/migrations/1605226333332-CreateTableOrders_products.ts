@@ -30,7 +30,8 @@ export default class CreateTableOrdersProducts1605226333332
           {
             name: 'price',
             type: 'decimal',
-            precision: 2,
+            precision: 8,
+            scale: 2,
           },
           {
             name: 'quantity',

@@ -52,7 +52,7 @@ class CreateOrderService {
         );
       }
       return {
-        price: product.price,
+        price: Number(product.price),
         product_id: product.id,
         quantity,
       };
@@ -64,6 +64,8 @@ class CreateOrderService {
       customer,
       products: orderProductsArray,
     });
+
+    order.customer = customer;
 
     return order;
   }
