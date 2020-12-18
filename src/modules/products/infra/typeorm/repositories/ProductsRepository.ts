@@ -21,7 +21,7 @@ class ProductsRepository implements IProductsRepository {
     price,
     quantity,
   }: ICreateProductDTO): Promise<Product> {
-    const product = await this.ormRepository.create({
+    const product = this.ormRepository.create({
       name,
       price,
       quantity,
@@ -64,8 +64,8 @@ class ProductsRepository implements IProductsRepository {
 
       if (indexOfProductsQuantity !== -1) {
         const updateProduct = item;
-        updateProduct.quantity = products[indexOfProductsQuantity].quantity;
-
+        updateProduct.quantity =
+          item.quantity - products[indexOfProductsQuantity].quantity;
         return updateProduct;
       }
       return item;

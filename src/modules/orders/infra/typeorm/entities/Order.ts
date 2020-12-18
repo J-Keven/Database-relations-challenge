@@ -20,7 +20,7 @@ class Order {
   @Column('uuid')
   customer_id: string;
 
-  @ManyToOne(() => Customer, { eager: true })
+  @ManyToOne(() => Customer, customer => customer, { eager: true })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
@@ -28,7 +28,7 @@ class Order {
     cascade: true,
     eager: true,
   })
-  public order_products!: OrdersProducts[];
+  order_products: OrdersProducts[];
 
   @CreateDateColumn()
   created_at: Date;

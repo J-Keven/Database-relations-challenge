@@ -35,35 +35,35 @@ class CreateOrderService {
       throw new AppError('This customer dont exists');
     }
 
-    const findAllProducts = await this.productsRepository.findAllById(products);
+    const allProductsById = await this.productsRepository.findAllById(
+      products.map(item => ({ id: item.id })),
+    );
 
-    findAllProducts.forEach(currentValue => {
-      const product = products.find(item => item.id === currentValue.id);
+    if (allProductsById.length !== products.length) {
+      throw new AppError('Product not found');
+    }
 
-      if (product && product.quantity > currentValue.quantity) {
-        throw new AppError('The number of items listed is not enough');
+    const orderProductsArray = allProductsById.map(product => {
+      const index = products.findIndex(item => item.id === product.id);
+      const { quantity } = products[index];
+      if (product.quantity - quantity < 0) {
+        throw new AppError(
+          `the product with id "${product.id}" does not quantity suficient`,
+        );
       }
-    });
-
-    const orders_products = products.map(product => {
-      const unitPrice = findAllProducts.find(item => item.id === product.id)
-        ?.price;
-
-      const order_product = {
+      return {
+        price: product.price,
         product_id: product.id,
-        price: unitPrice || 0,
-        quantity: product.quantity,
+        quantity,
       };
-
-      return order_product;
-    });
-
-    const order = await this.ordersRepository.create({
-      customer,
-      products: orders_products,
     });
 
     await this.productsRepository.updateQuantity(products);
+
+    const order = await this.ordersRepository.create({
+      customer,
+      products: orderProductsArray,
+    });
 
     return order;
   }
