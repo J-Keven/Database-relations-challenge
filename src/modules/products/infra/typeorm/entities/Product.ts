@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
+import OrdersProducts from '../../../../orders/infra/typeorm/entities/OrdersProducts';
 
 @Entity('products')
 class Product {

@@ -60,7 +60,7 @@ export default class CreateTableOrdersProducts1605226333332
             name: 'orderIdForeignKey',
             columnNames: ['order_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'order',
+            referencedTableName: 'orders',
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
           }),

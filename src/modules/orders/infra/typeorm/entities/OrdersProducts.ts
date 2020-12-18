@@ -8,39 +8,39 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-import Order from '@modules/orders/infra/typeorm/entities/Order';
-import Product from '@modules/products/infra/typeorm/entities/Product';
+import Product from '../../../../products/infra/typeorm/entities/Product';
+import Order from './Order';
 
-@Entity('ordersProducts')
+@Entity('orders_products')
 class OrdersProducts {
-  @PrimaryGeneratedColumn()
-  id: string;
+  @PrimaryGeneratedColumn('uuid')
+  public id!: string;
 
-  @Column()
-  product_id: string;
-
-  @Column()
-  order_id: string;
-
-  @ManyToOne(() => Order, order => order, { eager: true })
+  @ManyToOne(() => Order, order => order.order_products)
   @JoinColumn({ name: 'order_id' })
-  order: Order;
+  public order!: Order;
 
-  @ManyToOne(() => Product, product => product, { eager: true })
+  @ManyToOne(() => Product, product => product.order_products)
   @JoinColumn({ name: 'product_id' })
-  product: Product;
+  public product!: Product;
 
-  @Column()
-  price: number;
+  @Column('uuid')
+  public product_id!: string;
 
-  @Column()
-  quantity: number;
+  @Column('uuid')
+  public order_id!: string;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  public price!: number;
+
+  @Column('int')
+  public quantity!: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  public created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  public updated_at!: Date;
 }
 
 export default OrdersProducts;

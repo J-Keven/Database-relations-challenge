@@ -9,23 +9,26 @@ import {
   Column,
 } from 'typeorm';
 
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
-import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
+import Customer from '../../../../customers/infra/typeorm/entities/Customer';
+import OrdersProducts from './OrdersProducts';
 
-@Entity('order')
+@Entity('orders')
 class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('uuid')
   customer_id: string;
 
-  @ManyToOne(() => Customer, customer => customer, { eager: true })
+  @ManyToOne(() => Customer, { eager: true })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  @OneToMany(() => OrdersProducts, order => order.product)
-  order_products: OrdersProducts[];
+  @OneToMany(() => OrdersProducts, orders_products => orders_products.order, {
+    cascade: true,
+    eager: true,
+  })
+  public order_products!: OrdersProducts[];
 
   @CreateDateColumn()
   created_at: Date;
